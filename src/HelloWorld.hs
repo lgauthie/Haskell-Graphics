@@ -20,21 +20,28 @@ main = do
     initOpenGL
     angle <- newIORef 0.0 -- A nice "Mutable" IO Monad
 
+    -- Set up the OpenGl call backs
     GLUT.reshapeCallback $= Just reshape
     GLUT.keyboardMouseCallback $= Just keyboardMouse -- TODO: Something fun with this
     GLUT.displayCallback $= (display angle)
     GLUT.idleCallback $= Just (idle angle)
 
+    -- Start the program!
     GLUT.mainLoop
 
 initOpenGL :: IO ()
 initOpenGL = let light0 = GL.Light 0 in do
+    -- Set up the display modes more can be found at
+    -- http://hackage.haskell.org/packages/archive/GLUT/2.2.2.0/doc/html/Graphics-UI-GLUT-Initialization.html
     GLUT.initialDisplayMode $= [GLUT.RGBMode,GLUT.WithDepthBuffer,GLUT.DoubleBuffered]
 
+    -- Setup ye olde window, more information could probably
+    -- be found in the Haskell GLUT info.
     GLUT.initialWindowSize $= GL.Size 1024 786
     GLUT.initialWindowPosition $= GL.Position 0 0
     GLUT.createWindow "Hello World"
 
+    -- Set up the view and perspective stuff.
     GL.depthFunc $= Just GL.Lequal
     GL.matrixMode $= GL.Projection
     GL.depthMask $= GL.Enabled
@@ -43,6 +50,8 @@ initOpenGL = let light0 = GL.Light 0 in do
     GL.lookAt (GL.Vertex3 0.0 0.0 1.0) (GL.Vertex3 0.0 0.0 0.0) (GL.Vector3 0.0 1.0 0.0)
     GL.matrixMode $= GL.Modelview 0
 
+    -- Setup colors and lighting More information can be found at
+    -- http://hackage.haskell.org/packages/archive/OpenGL/2.6.0.1/doc/html/Graphics-Rendering-OpenGL-GL-Colors.html
     GL.clearColor $= GL.Color4 0.0 0.0 0.0 1.0
     GL.blendFunc $= (GL.SrcAlpha, GL.OneMinusSrcAlpha)
     GL.colorMaterial $= Just (GL.FrontAndBack, GL.AmbientAndDiffuse)
