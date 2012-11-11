@@ -1,7 +1,8 @@
 Graphics
 --------
 
-Some tests with OpenGL and Haskell.
+Some tests with OpenGL and Haskell; right now there is just
+animation, next is to add some simple keyboard interaction.
 
 Issues
 ------
